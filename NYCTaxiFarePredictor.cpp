@@ -12,10 +12,17 @@ std::vector<double> neuronLayer(const std::vector<double>& newInputs, // this li
               const std::vector<double>& LayerBiases) { //  "const" makes sure that the function does not change those input variables themselves.
               // notice that the code for the action itself exists inside {}
               std::vector<double> Param = LayerBiases; // creates a vector where std is the c++ namespace, :: tells the engine to search it, vector creates a vector and <double> is the vector data type 
-              for (int i = 0; i < LayerWeights.size(); i++) // this starts a for loop iterating over i. i++ adds 1 each time, vector.size() takes the number of variables in the vector, and the condition is captured inside ;;
-                    for (int j = 0; j < newInputs.size(); j++)
-                    Param[i] += LayerWeights[i][j] * newInputs[j];
-              return Param;
+              
+              
+                if (!LayerWeights.empty() && LayerWeights[0].size() == newInputs.size() && LayerWeights.size() == LayerBiases.size()) {
+                    for (int i = 0; i < LayerWeights.size(); i++) // this starts a for loop iterating over i. i++ adds 1 each time, vector.size() takes the number of variables in the vector, and the condition is captured inside ;;
+                        for (int j = 0; j < newInputs.size(); j++)
+                            Param[i] += LayerWeights[i][j] * newInputs[j];
+            } else { 
+                std::cout << "matrix vector size mismatch";
+            }
+            
+            return Param;
             }
 
 std::vector<double> relu(const std::vector<double>& inputs) { // this is the ReLU function. the purpose is to take the inputs and floor them at zero
