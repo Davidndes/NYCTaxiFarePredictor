@@ -11,8 +11,8 @@ std::vector<double> neuronLayer(const std::vector<double>& newInputs, // this li
               const std::vector<std::vector<double>>& LayerWeights, // these next lines import the data and variables that the function will use or act on ie they are the parameters, & means receives a refernce to the orginal vector rather than making a new a copy 
               const std::vector<double>& LayerBiases) { //  "const" makes sure that the function does not change those input variables themselves.
               // notice that the code for the action itself exists inside {}
-              std::vector<double> Param = LayerBiases; // creates a vector where std is the c++ library, :: tells the engine to search it, vector creates a vector and <double> is the vector data type 
-              for (int i = 0; i < LayerWeights.size(); i++) // this starts a for loop iterating over i. i++ adds 1 each time, vector.size() takes the number of variables in i, and the condition is captured inside ;;
+              std::vector<double> Param = LayerBiases; // creates a vector where std is the c++ namespace, :: tells the engine to search it, vector creates a vector and <double> is the vector data type 
+              for (int i = 0; i < LayerWeights.size(); i++) // this starts a for loop iterating over i. i++ adds 1 each time, vector.size() takes the number of variables in the vector, and the condition is captured inside ;;
                     for (int j = 0; j < newInputs.size(); j++)
                     Param[i] += LayerWeights[i][j] * newInputs[j];
               return Param;
@@ -37,24 +37,24 @@ std::vector<double> loadBiases(const std::string& filename) { // creates a funct
     std::vector<double> biases; // creates a vector called biases which is going to take in the numbers extracted from the file 
     double value; // creates a floating point number 
 
-    while (file >> value) { // here file holds the data coming through the stream, they stream objects that manage access to the data
-        biases.push_back(value); // push.back is this the syntax used to append the "value" to the vector "biases"
-    }
+    while (file >> value) { // here file holds the data coming through the stream, they stream objects that manage access to the data. the while sttaement means keep reading the file until you cannot read anymore
+        biases.push_back(value); // push_back is this the syntax used to append the "value" to the vector "biases"
+    } // note that ">>" extracts data from an input stream while "<<" sends data to an oupt stream like std::cout
     return biases;
 }
 
 std::vector<std::vector<double>> loadWeights( const std::string& filename) { // once again creating a function to load the .csv file containign the vector pf weig\ht vectors 
 
     std::ifstream file(filename);
-    std::vector<std::vector<double>> weights;
-    std::string line;
+    std::vector<std::vector<double>> weights; // creats an empty 2D vector 
+    std::string line; // creates a string variable called line
 
-    while (std::getline(file, line)) { // getline is a function that works with streams 
-        std::stringstream rowStream(line); // std::stringstream reads from string in memory 
-        std::string cell;
-        std::vector<double> row;
+    while (std::getline(file, line)) { // getline is a function that reads text from a stream untl it sees a delimiter then it makes a new line 
+        std::stringstream rowStream(line); // std::stringstream reads from string in memory (ie the one stroed in line) 
+        std::string cell; // string variable created 
+        std::vector<double> row; // vector created
 
-        while (std::getline(rowStream, cell, ',')) {// not sure what these lines are doing 
+        while (std::getline(rowStream, cell, ',')) {// lets getline read until there is a comma before starting a new line 
             row.push_back(std::stod(cell));
         }
         weights.push_back(row);
