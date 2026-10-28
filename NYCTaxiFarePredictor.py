@@ -50,9 +50,9 @@ inputsTable = connection.execute("""SELECT fare_amount AS Fares,
                               USING SAMPLE 100000 ROWS""").fetchdf()
 
 
-y = inputsTable["Fares"]
+y = inputsTable["Fares"] # therefore y conatins the correct answers 
 
-x = inputsTable[["Distance", "PickupHour", "PickupDay", "Duration_Minutes"]]
+x = inputsTable[["Distance", "PickupHour", "PickupDay", "Duration_Minutes"]] # contians contins the parameters associated with that answer
 
 # The training portion of the algorithm 
 from sklearn.model_selection import train_test_split
@@ -124,6 +124,8 @@ def TrainingSequence(model, tensorXtrain, tensorYtrain, lossFunction, optimizer)
 
 trainedModel = TrainingSequence(model, tensorXtrain, tensorYtrain, lossFunction, optimizer)
 
+torch.save(model.state_dict(), "taxi_model.pth")
+
 model.eval()
 
 with torch.no_grad():
@@ -163,3 +165,22 @@ for name, parameter in model.named_parameters():
 
 np.savetxt("standardizer_mean.csv", standardizer.mean_, delimiter=",")
 np.savetxt("standardizer_scale.csv", standardizer.scale_, delimiter=",")
+np.savetxt("xtestvalues.csv", x_test, delimiter=",")
+
+
+# for testing agaisnt c++
+
+
+
+#raw_inputs = np.array([[5,14,2,20]]) # np.array here coverts a python list into an array. the double [[]] will create a matrix
+#scaled_inputs = standardizer.transform(raw_inputs) # transofrm is a method belonging to the standradizer object 
+#input_tensor = torch.tensor(scaled_inputs, dtype=torch.float32) #transforms the data into tensor (a collection of matrices)
+
+model.eval()
+
+with torch.no_grad(): # disables gradent tracking, while " with" is used to entyer a context where rules temporarily apply
+    predictions = model(tensorXtest).numpy().flatten() # creates a one-dimensional numpy array(a vector) numpy takes it from a pytorch tensor to a numpy array and then flattens to one dimension
+
+np.savetxt("python_predictions.csv", predictions, delimiter = ",")
+
+#print("comparison prediction is:", prediction.item()) # .item() here is necessary becasue prediction is a tensor in this case
