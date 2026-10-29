@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Data
+*.parquet
+
+# Generated predictions
+xtestvalues.csv
+python_predictions.csv
+cpp_predictions.csv
+
+# Model parameters
+firstLayer_*.csv
+secondLayer_*.csv
+LastLayer_*.csv
+standardizer_*.csv
+
+# Saved model
+*.pth
+
+# C++ executable
+taxi_predictor
